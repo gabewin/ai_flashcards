@@ -1,6 +1,9 @@
 'use client'
 
+import { useUser } from '@clerk/nextjs'
 import { useState } from 'react'
+import { doc, collection, setDoc, getDoc, writeBatch } from 'firebase/firestore'
+import {db} from '@/firebase'
 import {
   Container,
   TextField,
