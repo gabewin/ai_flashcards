@@ -21,47 +21,47 @@ import {
 
 
 
-
-const saveFlashcards = async () => {
-  
-  if (!setName.trim()) {
-    alert('Please enter a name for your flashcard set.')
-    return
-  }
-
-  try {
-    const userDocRef = doc(collection(db, 'users'), user.id)
-    const userDocSnap = await getDoc(userDocRef)
-
-    const batch = writeBatch(db)
-
-    if (userDocSnap.exists()) {
-      const userData = userDocSnap.data()
-      const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-      batch.update(userDocRef, { flashcardSets: updatedSets })
-    } else {
-      batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
-    }
-
-    const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-    batch.set(setDocRef, { flashcards })
-
-    await batch.commit()
-
-    alert('Flashcards saved successfully!')
-    handleCloseDialog()
-    setSetName('')
-  } catch (error) {
-    console.error('Error saving flashcards:', error)
-    alert('An error occurred while saving flashcards. Please try again.')
-  }
-}
-
 export default function Generate() {
   const [setName, setSetName] = useState('')
   const [text, setText] = useState('')
   const [flashcards, setFlashcards] = useState([])
   const [dialogOpen, setDialogOpen] = useState(false)
+  const handleOpenDialog = () => setDialogOpen(true)
+  const handleCloseDialog = () => setDialogOpen(false)
+
+  const saveFlashcards = async () => {
+    if (!setName.trim()) {
+      alert('Please enter a name for your flashcard set.')
+      return
+    }
+  
+    try {
+      const userDocRef = doc(collection(db, 'users'), user.id)
+      const userDocSnap = await getDoc(userDocRef)
+  
+      const batch = writeBatch(db)
+  
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data()
+        const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
+        batch.update(userDocRef, { flashcardSets: updatedSets })
+      } else {
+        batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
+      }
+  
+      const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
+      batch.set(setDocRef, { flashcards })
+  
+      await batch.commit()
+  
+      alert('Flashcards saved successfully!')
+      handleCloseDialog()
+      setSetName('')
+    } catch (error) {
+      console.error('Error saving flashcards:', error)
+      alert('An error occurred while saving flashcards. Please try again.')
+    }
+  }
 
   const handleSubmit = async () => {
     if (!text.trim()) {
