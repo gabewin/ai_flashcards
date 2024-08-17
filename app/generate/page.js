@@ -1,28 +1,22 @@
 'use client'
-
 import { useUser } from '@clerk/nextjs'
 import { useState } from 'react'
 import { doc, collection, setDoc, getDoc, writeBatch } from 'firebase/firestore'
-import {db} from '@/firebase'
+import { db } from '@/firebase'
 import {
   Container,
+  Box,
+  Typography,
   TextField,
   Button,
-  Typography,
-  Box,
   Grid,
-  Card, 
-  CardContent,
+  Card,
   Dialog,
-  DialogContent,
   DialogTitle,
+  DialogContent,
   DialogContentText,
-  DialogActions,
-  
-} from '@mui/material'
-
-
-
+  DialogActions
+} from '@mui/material';
 
 export default function Generate() {
   const [setName, setSetName] = useState('')
@@ -91,9 +85,15 @@ export default function Generate() {
   }
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+    <Container maxWidth={false} disableGutters sx={{ 
+      background: 'linear-gradient(to bottom, rgba(34,193,195,0.8) 0%, rgba(229,220,139,0.7) 100%)', 
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
+      <Box sx={{ my: 4, p: 4, borderRadius: 2, boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff', width: '100%', maxWidth: '1200px' }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
           Generate Flashcards
         </Typography>
         <TextField
@@ -104,67 +104,129 @@ export default function Generate() {
           multiline
           rows={4}
           variant="outlined"
-          sx={{ mb: 2 }}
+          sx={{ mb: 3, backgroundColor: '#fff', borderRadius: 1 }}
         />
         <Button
           variant="contained"
           color="primary"
           onClick={handleSubmit}
           fullWidth
+          sx={{ 
+            p: 1, 
+            borderRadius: '8px', 
+            fontWeight: 'bold', 
+            backgroundColor: '#000', 
+            ':hover': { backgroundColor: '#333' } 
+          }}
         >
           Generate Flashcards
         </Button>
       </Box>
-      
+  
       {flashcards.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
+        <Box sx={{ mt: 6, position: 'relative', width: '100%', maxWidth: '1200px', padding: '0 16px' }}>
+          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
             Generated Flashcards
           </Typography>
-          <Grid container spacing={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenDialog}
+            sx={{
+              position: 'fixed', 
+              bottom: 16, //  the distance from the bottom
+              right: 16, //  distance from the right
+              p: 1,
+              borderRadius: '8px',
+              fontWeight: 'bold',
+              backgroundColor: '#000',
+              ':hover': { backgroundColor: '#333' }
+            }}
+          >
+            Save Flashcards
+          </Button>
+          <Grid container spacing={4} justifyContent="center">
             {flashcards.map((flashcard, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Front:</Typography>
-                    <Typography>{flashcard.front}</Typography>
-                    <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-                    <Typography>{flashcard.back}</Typography>
-                  </CardContent>
+                <Card sx={{ 
+                  borderRadius: 2, 
+                  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
+                  position: 'relative',
+                  height: 200,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  perspective: '1000px'
+                }}>
+                  <Box sx={{ 
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    transition: 'transform 0.6s',
+                    transformStyle: 'preserve-3d',
+                    '&:hover': {
+                      transform: 'rotateY(180deg)'
+                    }
+                  }}>
+                    <Box sx={{ 
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      backfaceVisibility: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      p: 2,
+                      backgroundColor: '#fff'
+                    }}>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{flashcard.front}</Typography>
+                    </Box>
+                    <Box sx={{ 
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      backfaceVisibility: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      p: 2,
+                      backgroundColor: '#f5f5f5',
+                      transform: 'rotateY(180deg)'
+                    }}>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{flashcard.back}</Typography>
+                    </Box>
+                  </Box>
                 </Card>
               </Grid>
             ))}
-            {flashcards.length > 0 && (
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-              <Button variant="contained" color="primary" onClick={handleOpenDialog}>
-                Save Flashcards
-              </Button>
-              <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-                <DialogTitle>Save Flashcard Set</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Please enter a name for your flashcard set.
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Set Name"
-                    type="text"
-                    fullWidth
-                    value={setName}
-                    onChange={(e) => setSetName(e.target.value)}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseDialog}>Cancel</Button>
-                  <Button onClick={saveFlashcards} color="primary">
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
-          )}
           </Grid>
+          <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+            <DialogTitle sx={{ fontWeight: 'bold' }}>Save Flashcard Set</DialogTitle>
+            <DialogContent sx={{ p: 3 }}>
+              <DialogContentText>
+                Please enter a name for your flashcard set.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Set Name"
+                type="text"
+                fullWidth
+                value={setName}
+                onChange={(e) => setSetName(e.target.value)}
+                sx={{ mt: 2 }}
+              />
+            </DialogContent>
+            <DialogActions sx={{ p: 2 }}>
+              <Button onClick={handleCloseDialog} sx={{ fontWeight: 'bold' }}>Cancel</Button>
+              <Button onClick={saveFlashcards} color="primary" sx={{ fontWeight: 'bold' }}>
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       )}
     </Container>

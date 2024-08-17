@@ -22,100 +22,141 @@ const handleSubmit = async () => {
 
 export default function Home() {
   return (
-    <Container maxWidth="lg">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{flexGrow: 1}}>
-            Flashcard SaaS
-          </Typography>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{textAlign: 'center', my: 4}}>
-        <Typography variant="h2" component="h1" gutterBottom>
+    <Box sx={{
+      background: 'linear-gradient(to bottom, rgba(34,193,195,0.8044467787114846) 0%, rgba(229,220,139,0.7036064425770308) 100%)',
+      
+      minHeight: '100vh',
+      color: '#000',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      {/* AppBar with a box and shadow */}
+      <Box sx={{
+        width: '100%',
+        maxWidth: '1200px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+        background: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        mb: 4
+      }}>
+        <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#000' }}>
+              Flashcard SaaS
+            </Typography>
+            <SignedOut>
+              <Button sx={{ backgroundColor: '#333', color: '#fff', marginRight: 1 }} href="/sign-in">
+                Login
+              </Button>
+              <Button color="primary" variant="contained" href="/sign-up">
+                Sign Up
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </Toolbar>
+        </AppBar>
+      </Box>
+
+      {/* Hero section with a box and shadow */}
+      <Box sx={{
+        width: '100%',
+        maxWidth: '1200px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        padding: 4,
+        borderRadius: 2,
+        mb: 4,
+        textAlign: 'center'
+      }}>
+        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
           Welcome to Flashcard SaaS
         </Typography>
         <Typography variant="h5" component="h2" gutterBottom>
           The easiest way to create flashcards from your text.
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+        <Button variant="contained" color="primary" sx={{ mt: 2, mr: 2 }} href="/generate">
           Get Started
         </Button>
-        <Button variant="outlined" color="primary" sx={{mt: 2}}>
+        <Button variant="outlined" color="primary" sx={{ mt: 2, borderColor: '#000', color: '#000' }}>
           Learn More
         </Button>
       </Box>
 
-      <Box sx={{my: 6, textAlign: 'center'}}>
-        <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
+      {/* Features section with a box  shadow */}
+      <Box sx={{
+        width: '100%',
+        maxWidth: '1200px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        padding: 4,
+        borderRadius: 2,
+        mb: 4
+      }}>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+          Features
+        </Typography>
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} md={4}>
             <Typography variant="h6">Smart Flashcards</Typography>
-            <Typography>
-              {' '}
-              Our AI intelligently breaks down your text into concise flashcrds, perfect for studying
+            <Typography sx={{ color: '#333', mt: 1 }}>
+              Our AI intelligently breaks down your text into concise flashcards, perfect for studying.
             </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant="h6">Accessible Anywhere</Typography>
-            <Typography>
-              {' '}
+            <Typography sx={{ color: '#333', mt: 1 }}>
               Access your flashcards from any device, at any time. Study on the go with ease.
             </Typography>
           </Grid>
         </Grid>
       </Box>
 
-      <Box sx={{my: 6, textAlign: 'center'}}>
-        <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Basic</Typography>
-            <Typography variant="h6">$5 / month</Typography>
-            <Typography>
-              {' '}
+      {/* Pricing section with a box  shadow */}
+      <Box sx={{
+        width: '100%',
+        maxWidth: '1200px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        padding: 4,
+        borderRadius: 2,
+        mb: 4
+      }}>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+          Pricing
+        </Typography>
+        <Grid container spacing={4} justifyContent="center" alignItems="center">
+          <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Basic</Typography>
+            <Typography variant="h6" sx={{ mt: 1 }}>$5 / month</Typography>
+            <Typography sx={{ color: '#333', mt: 1 }}>
               Limited Storage
             </Typography>
-            <Button variant ="contained" color="primary">
-              Get
+            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              Get Basic
             </Button>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Pro</Typography>
-            <Typography variant="h6">$10 / month</Typography>
-            <Typography>
-              {' '}
-              Limited Storage
-            </Typography>
-            <Button variant ="contained" color="primary">
-              Get
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Basic</Typography>
-            <Typography variant="h6">$5 / month</Typography>
-            <Typography>
-              {' '}
+          <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Pro</Typography>
+            <Typography variant="h6" sx={{ mt: 1 }}>$10 / month</Typography>
+            <Typography sx={{ color: '#333', mt: 1 }}>
               Unlimited Storage
             </Typography>
-            <Button variant ="contained" color="primary">
-              Get
+            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              Get Pro
             </Button>
           </Grid>
-          
         </Grid>
       </Box>
-
-
-    </Container>
-  )
+    </Box>
+  );
 }
+
 /*
 
 
