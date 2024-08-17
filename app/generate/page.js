@@ -3,6 +3,7 @@ import { useUser } from '@clerk/nextjs'
 import { useState } from 'react'
 import { doc, collection, setDoc, getDoc, writeBatch } from 'firebase/firestore'
 import { db } from '@/firebase'
+import { getFirestore } from 'firebase/firestore'
 import {
   Container,
   Box,
@@ -19,6 +20,7 @@ import {
 } from '@mui/material';
 
 export default function Generate() {
+  const { isLoaded, isSignedIn, user } = useUser()
   const [setName, setSetName] = useState('')
   const [text, setText] = useState('')
   const [flashcards, setFlashcards] = useState([])
