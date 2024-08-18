@@ -1,3 +1,4 @@
+import { Container, Grid, Typography, Card, CardActionArea, CardContent} from '@mui/material'
 export default function Flashcard() {
     const { isLoaded, isSignedIn, user } = useUser()
     const [flashcards, setFlashcards] = useState([])
