@@ -1,3 +1,4 @@
+import { Container, Box, Typography, CircularProgress } from '@mui/material'
 const ResultPage = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
