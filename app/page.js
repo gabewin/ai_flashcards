@@ -8,7 +8,7 @@ export default function Home() {
   const handleSubmitPro = async () => {
     const checkoutSession = await fetch('/api/checkout_sessions/pro', {
       method: 'POST',
-      headers: { origin: 'https://ai-flashcards-7z0ow4cl0-gabewins-projects.vercel.app/' },
+      headers: { origin: 'https://fluentfocusai.com' },
     })
     const checkoutSessionJson = await checkoutSession.json()
 
@@ -30,7 +30,7 @@ export default function Home() {
   const handleSubmitBasic = async () => {
     const checkoutSession = await fetch('/api/checkout_sessions/basic', {
       method: 'POST',
-      headers: { origin: 'https://ai-flashcards-7z0ow4cl0-gabewins-projects.vercel.app/' },
+      headers: { origin: 'https://fluentfocusai.com' },
     })
     const checkoutSessionJson = await checkoutSession.json()
 
