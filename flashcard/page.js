@@ -1,7 +1,12 @@
+'use client'
+import { useUser } from '@clerk/nextjs'
+import { Container, Grid, Typography, Card, CardActionArea, CardContent} from '@mui/material'
+
 export default function Flashcard() {
     const { isLoaded, isSignedIn, user } = useUser()
     const [flashcards, setFlashcards] = useState([])
     const [flipped, setFlipped] = useState({})
+    
   
     const searchParams = useSearchParams()
     const search = searchParams.get('id')
