@@ -1,26 +1,54 @@
-
+'use client'
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { Container, Box, Typography, AppBar, Toolbar, Button, Grid } from '@mui/material'
 import getStripe from '@/utils/get-stripe'
 
-const handleSubmit = async () => {
-  const checkoutSession = await fetch('/api/checkout_sessions', {
-    method: 'POST',
-    headers: { origin: 'http://localhost:3000' },
-  })
-  const checkoutSessionJson = await checkoutSession.json()
-
-  const stripe = await getStripe()
-  const {error} = await stripe.redirectToCheckout({
-    sessionId: checkoutSessionJson.id,
-  })
-
-  if (error) {
-    console.warn(error.message)
-  }
-}
-
 export default function Home() {
+
+  const handleSubmitPro = async () => {
+    const checkoutSession = await fetch('/api/checkout_sessions/pro', {
+      method: 'POST',
+      headers: { origin: 'http://localhost:3000' },
+    })
+    const checkoutSessionJson = await checkoutSession.json()
+
+    if (checkoutSession.statusCode === 500){
+      console.error(checkoutSession.message)
+      return
+    }
+  
+    const stripe = await getStripe()
+    const {error} = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    })
+  
+    if (error) {
+      console.warn(error.message)
+    }
+  }
+
+  const handleSubmitBasic = async () => {
+    const checkoutSession = await fetch('/api/checkout_sessions/basic', {
+      method: 'POST',
+      headers: { origin: 'http://localhost:3000' },
+    })
+    const checkoutSessionJson = await checkoutSession.json()
+
+    if (checkoutSession.statusCode === 500){
+      console.error(checkoutSession.message)
+      return
+    }
+  
+    const stripe = await getStripe()
+    const {error} = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    })
+  
+    if (error) {
+      console.warn(error.message)
+    }
+  }
+
   return (
     <Box sx={{
       background: 'linear-gradient(to bottom, rgba(34,193,195,0.8044467787114846) 0%, rgba(229,220,139,0.7036064425770308) 100%)',
@@ -137,17 +165,17 @@ export default function Home() {
             <Typography sx={{ color: '#333', mt: 1 }}>
               Limited Storage
             </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmitBasic}>
               Get Basic
             </Button>
           </Grid>
-          <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+          <Grid item xs={12} md={4} sx={{ textAlign: 'center' }} >
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Pro</Typography>
             <Typography variant="h6" sx={{ mt: 1 }}>$10 / month</Typography>
             <Typography sx={{ color: '#333', mt: 1 }}>
               Unlimited Storage
             </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmitPro}>
               Get Pro
             </Button>
           </Grid>
